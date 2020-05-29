@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Helmet } from "react-helmet";
-import { message, Button, Input, Card, Divider } from 'antd';
+import { message, Button, Input, Divider } from 'antd';
 import 'antd/dist/antd.css';
-import { LikeOutlined } from '@ant-design/icons';
+import { HeartOutlined } from '@ant-design/icons';
 import api from "../api";
 import Theme from "../components/Theme";
 import MovieCard from "../components/MovieCard";
+import Wishlist from './Wishlist';
 
 function Movies() {
     const [loading, setLoading] = useState(false);
     const [movie, setMovie] = useState(null);
+    const [wishlist, setWishlist] = useState([]);
+    const [modalShow, setModalShow] = useState(false);
     const [searchInputTimeout, setSearchAInputTimeout] = useState(0);
 
     const searchMovie = async (title) => {
@@ -19,8 +22,7 @@ function Movies() {
             .then(async response => {
                 console.info(response);
                 if (response.Response === "False") {
-                    message.warning('Not found, please try again');
-                    setMovie(null);
+                    message.warning('The movie is not found, please try again');
                 }
                 else {
                     const movie = {
@@ -38,8 +40,8 @@ function Movies() {
         setLoading(false);
     }
 
-
     const onSearchChange = (event) => {
+        setMovie(null);
         setLoading(true);
         const { value } = event.target;
         if (searchInputTimeout) {
@@ -51,20 +53,36 @@ function Movies() {
         }, 1500));
     }
 
+    const addToWishlist = (movie) => {
+        if (!wishlist.includes(movie)) {
+            setWishlist([...wishlist, movie]);
+            message.success(`${movie.Title} is added to wishlist`);
+        }
+        else {
+            message.warn(`${movie.Title} has aleady been added`);
+        }
+    }
+    const removeFromWishlist = (title) => {
+        const newWishlist = wishlist.filter(movie => movie.Title !== title);
+        setWishlist(newWishlist);
+        message.success(`${movie.Title} is removed from wishlist`);
+    }
 
     return (
         <Theme>
             <Helmet>
-                <title>Moviews</title>
-                <meta name="description" content="Moviews" />
+                <title>Movies</title>
+                <meta name="description" content="Movies" />
             </Helmet>
-            <h1>Search a movie by title</h1>
+            <Button onClick={() => setModalShow(true)}><HeartOutlined />Wishlist</Button>
+            <Wishlist modalShow={modalShow} setModalShow={setModalShow} wishlist={wishlist} removeFromWishlist={removeFromWishlist} />
+            <Divider>Search a movie by name</Divider>
             <Input type="search" placeholder="search by movie title" onChange={onSearchChange} />
             <Divider />
             {!loading ?
                 movie &&
                 (
-                    <MovieCard movie={movie} />
+                    <MovieCard movie={movie} addToWishlist={addToWishlist} />
                 )
                 :
                 <div>Loading...</div>

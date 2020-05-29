@@ -1,15 +1,13 @@
 
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import { Card, } from 'antd';
-import { LikeOutlined } from '@ant-design/icons';
-import styles from './styles.module.css';
+import { Card, Button } from 'antd';
 
 const { Meta } = Card;
-function MovieCard({ movie }) {
+function MovieCard({ movie, addToWishlist, removeFromWishlist }) {
     return (
         <Card
-            style={{ width: 300 }}
+            style={{ width: '100%', maxWidth: 300, margin: '10px auto' }}
             cover={
                 movie.Poster !== "N/A" &&
                 <img
@@ -17,17 +15,22 @@ function MovieCard({ movie }) {
                     src={movie.Poster}
                 />
             }
-            actions={[
-                <LikeOutlined key="wishlist" />,
-            ]}
+            actions={
+                removeFromWishlist ?
+                    [
+                        <Button key="removeFromWishlist" onClick={() => removeFromWishlist(movie.Title)} >Remove</Button>,
+                    ] : [
+                        <Button key="addWishlist" onClick={() => addToWishlist(movie)} >Add to wishlist</Button>,
+                    ]
+            }
         ><div>
                 <Meta
                     title={movie.Title}
                 />
                 <br />
-                            YEAR - {movie.Year}<br />
-                            Rated - {movie.Rated}<br />
-                            Country - {movie.Country}<br />
+                YEAR - {movie.Year}<br />
+                Rated - {movie.Rated}<br />
+                Country - {movie.Country}<br />
             </div>
         </Card>
     );
@@ -43,4 +46,6 @@ MovieCard.propTypes = {
         Country: PropTypes.string.isRequired,
         Poster: PropTypes.string,
     }).isRequired,
+    addToWishlist: PropTypes.func,
+    removeFromWishlist: PropTypes.func,
 };
