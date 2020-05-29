@@ -26,7 +26,6 @@ const getListStyle = isDraggingOver => ({
     width: '100%'
 });
 
-
 function Wishlist({ wishlist, setWishlist, modalShow, setModalShow, removeFromWishlist, toggleLike }) {
     const onDragEnd = (result) => {
         if (!result.destination) {

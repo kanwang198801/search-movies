@@ -96,7 +96,7 @@ function SearchMovie() {
                 <title>Movies</title>
                 <meta name="description" content="Movies" />
             </Helmet>
-            <Button onClick={() => setModalShow(true)}><HeartOutlined />Wishlist</Button>
+            <Button onClick={() => setModalShow(true)}><HeartOutlined />Wishlist {wishlist.length}</Button>
             <Wishlist
                 modalShow={modalShow}
                 setModalShow={setModalShow}
