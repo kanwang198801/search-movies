@@ -1,21 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from "react-helmet";
+import { message, Button, Input, Card, Divider } from 'antd';
+import 'antd/dist/antd.css';
+import { LikeOutlined } from '@ant-design/icons';
 import api from "../api";
 import Theme from "../components/Theme";
+import MovieCard from "../components/MovieCard";
 
-
-function Movies(props) {
+function Movies() {
     const [loading, setLoading] = useState(false);
-    const [movies, setMovies] = useState([]);
+    const [movie, setMovie] = useState(null);
     const [searchInputTimeout, setSearchAInputTimeout] = useState(0);
 
-    const searchMovies = async (title) => {
+    const searchMovie = async (title) => {
         await fetch(
             `${api.URL}/?t=${title}&apikey=${api.KEY}`
         ).then(res => res.json())
             .then(async response => {
-                setMovies(response);
                 console.info(response);
+                if (response.Response === "False") {
+                    message.warning('Not found, please try again');
+                    setMovie(null);
+                }
+                else {
+                    const movie = {
+                        imdbID: response.imdbID,
+                        Title: response.Title,
+                        Year: response.Year,
+                        Rated: response.Rated,
+                        Country: response.Country,
+                        Poster: response.Poster,
+                    }
+                    setMovie(movie);
+                }
             })
             .catch(error => console.log(error));
         setLoading(false);
@@ -29,7 +46,7 @@ function Movies(props) {
             clearTimeout(searchInputTimeout);
         }
         setSearchAInputTimeout(setTimeout(() => {
-            searchMovies(value);
+            searchMovie(value);
             setLoading(false);
         }, 1500));
     }
@@ -38,21 +55,21 @@ function Movies(props) {
     return (
         <Theme>
             <Helmet>
-                <title>Stories</title>
-                <meta name="description" content="Stories" />
+                <title>Moviews</title>
+                <meta name="description" content="Moviews" />
             </Helmet>
-            <input type="search" placeholder="search by movie title" onChange={onSearchChange} />
+            <h1>Search a movie by title</h1>
+            <Input type="search" placeholder="search by movie title" onChange={onSearchChange} />
+            <Divider />
             {!loading ?
-                movies.length > 0 &&
+                movie &&
                 (
-                    <>
-                        <h1>Search result</h1>
-
-                    </>
+                    <MovieCard movie={movie} />
                 )
                 :
-                <div>Loading...</div>}
-        </Theme>
+                <div>Loading...</div>
+            }
+        </Theme >
     );
 }
 

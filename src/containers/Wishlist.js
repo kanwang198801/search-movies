@@ -7,7 +7,7 @@ function Wishlist(props) {
         <Theme>
             <Helmet>
                 <title>Wishlist</title>
-                <meta name="description" content="Stories" />
+                <meta name="description" content="Wishlist" />
             </Helmet>
             <h1>Wishlist</h1>
         </Theme>
