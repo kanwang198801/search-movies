@@ -26,13 +26,13 @@ const getListStyle = isDraggingOver => ({
     width: '100%'
 });
 
-function Wishlist({ wishlist, setWishlist, modalShow, setModalShow, removeFromWishlist, toggleLike }) {
+function Watchlist({ watchlist, setWishlist, modalShow, setModalShow, removeFromWishlist, toggleLike }) {
     const onDragEnd = (result) => {
         if (!result.destination) {
             return;
         }
         const newWishlist = reorder(
-            wishlist,
+            watchlist,
             result.source.index,
             result.destination.index
         );
@@ -41,7 +41,7 @@ function Wishlist({ wishlist, setWishlist, modalShow, setModalShow, removeFromWi
     }
     return (
         <Modal
-            title="Wishlist"
+            title="Watchlist"
             visible={modalShow}
             footer={null}
             onOk={() => setModalShow(false)}
@@ -55,7 +55,7 @@ function Wishlist({ wishlist, setWishlist, modalShow, setModalShow, removeFromWi
                             ref={provided.innerRef}
                             style={getListStyle(snapshot.isDraggingOver)}
                         >
-                            {wishlist.map((movie, index) => (
+                            {watchlist.map((movie, index) => (
                                 <Draggable key={movie.imdbID} draggableId={movie.imdbID} index={index}>
                                     {(provided, snapshot) => (
                                         <div key={movie.imdbID}
@@ -81,9 +81,9 @@ function Wishlist({ wishlist, setWishlist, modalShow, setModalShow, removeFromWi
     );
 }
 
-export default Wishlist;
-Wishlist.propTypes = {
-    wishlist: PropTypes.arrayOf(PropTypes.shape({
+export default Watchlist;
+Watchlist.propTypes = {
+    watchlist: PropTypes.arrayOf(PropTypes.shape({
         imdbID: PropTypes.string.isRequired,
         Title: PropTypes.string.isRequired,
         Year: PropTypes.string.isRequired,

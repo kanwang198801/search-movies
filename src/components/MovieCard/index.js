@@ -2,7 +2,7 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { Card, Button } from 'antd';
-import { DeleteOutlined, HeartTwoTone } from '@ant-design/icons';
+import { EyeInvisibleOutlined, HeartTwoTone } from '@ant-design/icons';
 import Share from '../Share';
 
 const { Meta } = Card;
@@ -14,12 +14,12 @@ function MovieCard({ movie, addToWishlist, removeFromWishlist, toggleLike }) {
             actions={
                 movie.like ?
                     [
-                        <DeleteOutlined onClick={() => removeFromWishlist(movie.Title)} />
+                        <EyeInvisibleOutlined onClick={() => removeFromWishlist(movie.Title)} />
                         ,
                         <HeartTwoTone onClick={() => toggleLike(movie.Title)} twoToneColor="#eb2f96" />
                     ] :
                     [
-                        <DeleteOutlined onClick={() => removeFromWishlist(movie.Title)} />
+                        <EyeInvisibleOutlined onClick={() => removeFromWishlist(movie.Title)} />
                         ,
                         <HeartTwoTone onClick={() => toggleLike(movie.Title)} />
                     ]
@@ -45,7 +45,7 @@ function MovieCard({ movie, addToWishlist, removeFromWishlist, toggleLike }) {
                 />
             }
             actions={[
-                <Button key="addWishlist" onClick={() => addToWishlist(movie)} >Add to wishlist</Button>,
+                <Button key="addWishlist" onClick={() => addToWishlist(movie)} >Add to watchlist</Button>,
             ]}
         ><div>
                 <Meta

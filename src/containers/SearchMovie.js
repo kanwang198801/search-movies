@@ -2,28 +2,28 @@ import React, { useState, useEffect } from 'react';
 import { Helmet } from "react-helmet";
 import { message, Button, Input, Divider } from 'antd';
 import 'antd/dist/antd.css';
-import { HeartOutlined, LoadingOutlined } from '@ant-design/icons';
+import { EyeOutlined, LoadingOutlined } from '@ant-design/icons';
 import api from "../api";
 import Theme from "../components/Theme";
 import MovieCard from "../components/MovieCard";
-import Wishlist from './Wishlist';
+import Watchlist from './Watchlist';
 
 function SearchMovie() {
     const [loading, setLoading] = useState(false);
     const [movie, setMovie] = useState(null);
-    const [wishlist, setWishlist] = useState([]);
+    const [watchlist, setWishlist] = useState([]);
     const [modalShow, setModalShow] = useState(false);
     const [searchInputTimeout, setSearchAInputTimeout] = useState(0);
 
     useEffect(() => {
-        const data = localStorage.getItem("my-wishlist");
+        const data = localStorage.getItem("my-watchlist");
         if (data) {
             setWishlist(JSON.parse(data));
         }
     }, []);
 
     useEffect(() => {
-        localStorage.setItem("my-wishlist", JSON.stringify(wishlist));
+        localStorage.setItem("my-watchlist", JSON.stringify(watchlist));
     });
 
     const searchMovie = async (title) => {
@@ -65,22 +65,22 @@ function SearchMovie() {
     }
 
     const addToWishlist = (movie) => {
-        if (!wishlist.find(m => m.Title === movie.Title)) {
-            setWishlist([...wishlist, movie]);
-            message.success(`${movie.Title} is added to wishlist`);
+        if (!watchlist.find(m => m.Title === movie.Title)) {
+            setWishlist([...watchlist, movie]);
+            message.success(`${movie.Title} is added to watchlist`);
         }
         else {
             message.warn(`${movie.Title} has aleady been added`);
         }
     }
     const removeFromWishlist = (title) => {
-        const newWishlist = wishlist.filter(movie => movie.Title !== title);
+        const newWishlist = watchlist.filter(movie => movie.Title !== title);
         setWishlist(newWishlist);
-        message.success(`${title} is removed from wishlist`);
+        message.success(`${title} is removed from watchlist`);
     }
 
     const toggleLike = (title) => {
-        const newWishlist = wishlist.map(movie => {
+        const newWishlist = watchlist.map(movie => {
             if (movie.Title === title) {
                 movie.like = !movie.like;
             }
@@ -96,11 +96,11 @@ function SearchMovie() {
                 <title>Movies</title>
                 <meta name="description" content="Movies" />
             </Helmet>
-            <Button onClick={() => setModalShow(true)}><HeartOutlined />Wishlist {wishlist.length}</Button>
-            <Wishlist
+            <Button onClick={() => setModalShow(true)}><EyeOutlined />Watchlist {watchlist.length}</Button>
+            <Watchlist
                 modalShow={modalShow}
                 setModalShow={setModalShow}
-                wishlist={wishlist}
+                watchlist={watchlist}
                 setWishlist={setWishlist}
                 removeFromWishlist={removeFromWishlist}
                 toggleLike={toggleLike} />
