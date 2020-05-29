@@ -1,26 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from "react-helmet";
 import { message, Button, Input, Divider } from 'antd';
 import 'antd/dist/antd.css';
-import { HeartOutlined } from '@ant-design/icons';
+import { HeartOutlined, LoadingOutlined } from '@ant-design/icons';
 import api from "../api";
 import Theme from "../components/Theme";
 import MovieCard from "../components/MovieCard";
 import Wishlist from './Wishlist';
 
-function Movies() {
+function SearchMovie() {
     const [loading, setLoading] = useState(false);
     const [movie, setMovie] = useState(null);
     const [wishlist, setWishlist] = useState([]);
     const [modalShow, setModalShow] = useState(false);
     const [searchInputTimeout, setSearchAInputTimeout] = useState(0);
 
+    useEffect(() => {
+        const data = localStorage.getItem("my-wishlist");
+        if (data) {
+            setWishlist(JSON.parse(data));
+        }
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem("my-wishlist", JSON.stringify(wishlist));
+    });
+
     const searchMovie = async (title) => {
         await fetch(
             `${api.URL}/?t=${title}&apikey=${api.KEY}`
         ).then(res => res.json())
             .then(async response => {
-                console.info(response);
                 if (response.Response === "False") {
                     message.warning('The movie is not found, please try again');
                 }
@@ -55,7 +65,7 @@ function Movies() {
     }
 
     const addToWishlist = (movie) => {
-        if (!wishlist.includes(movie)) {
+        if (!wishlist.find(m => m.Title === movie.Title)) {
             setWishlist([...wishlist, movie]);
             message.success(`${movie.Title} is added to wishlist`);
         }
@@ -66,7 +76,7 @@ function Movies() {
     const removeFromWishlist = (title) => {
         const newWishlist = wishlist.filter(movie => movie.Title !== title);
         setWishlist(newWishlist);
-        message.success(`${movie.Title} is removed from wishlist`);
+        message.success(`${title} is removed from wishlist`);
     }
 
     const toggleLike = (title) => {
@@ -79,7 +89,7 @@ function Movies() {
         );
         setWishlist(newWishlist);
     }
-    console.info(wishlist);
+
     return (
         <Theme>
             <Helmet>
@@ -103,10 +113,10 @@ function Movies() {
                     <MovieCard movie={movie} addToWishlist={addToWishlist} />
                 )
                 :
-                <div>Loading...</div>
+                <LoadingOutlined style={{ fontSize: '36px' }} />
             }
         </Theme >
     );
 }
 
-export default Movies;
+export default SearchMovie;

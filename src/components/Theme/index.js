@@ -1,9 +1,9 @@
 
 import * as React from 'react';
-import { Layout, Menu, Breadcrumb } from 'antd';
+import { Layout } from 'antd';
 import styles from './styles.module.css';
 
-const { Header, Footer, Sider, Content } = Layout;
+const { Footer, Content } = Layout;
 function Theme({ children }) {
     return (
         <Layout className="layout" style={{ backgroundColor: '#fff' }} >

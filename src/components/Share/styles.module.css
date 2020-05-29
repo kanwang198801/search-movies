@@ -1,0 +1,7 @@
+.Share{
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-evenly;
+    border-top: 1px solid #ccc;
+    padding-top: 20px;
+}

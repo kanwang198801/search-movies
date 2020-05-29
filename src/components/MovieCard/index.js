@@ -3,6 +3,7 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { Card, Button } from 'antd';
 import { DeleteOutlined, HeartTwoTone } from '@ant-design/icons';
+import Share from '../Share';
 
 const { Meta } = Card;
 function MovieCard({ movie, addToWishlist, removeFromWishlist, toggleLike }) {
@@ -27,6 +28,8 @@ function MovieCard({ movie, addToWishlist, removeFromWishlist, toggleLike }) {
                 <Meta
                     title={movie.Title}
                 />
+                <br />
+                <Share movie={movie} />
             </div>
         </Card>
     }
@@ -47,11 +50,13 @@ function MovieCard({ movie, addToWishlist, removeFromWishlist, toggleLike }) {
         ><div>
                 <Meta
                     title={movie.Title}
+
                 />
                 <br />
                 YEAR - {movie.Year}<br />
                 Rated - {movie.Rated}<br />
                 Country - {movie.Country}<br />
+                <Share movie={movie} />
             </div>
         </Card>
     }
