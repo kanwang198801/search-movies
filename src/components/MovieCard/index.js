@@ -2,37 +2,48 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { Card, Button } from 'antd';
-import { LikeOutlined, DeleteOutlined, HeartTwoTone } from '@ant-design/icons';
+import { DeleteOutlined, HeartTwoTone } from '@ant-design/icons';
+
 const { Meta } = Card;
 function MovieCard({ movie, addToWishlist, removeFromWishlist, toggleLike }) {
-    return (
-        <Card
+    let card = "";
+    if (removeFromWishlist) {
+        card = <Card
+            style={{ width: '100%', margin: '10px auto' }}
+            actions={
+                movie.like ?
+                    [
+                        <DeleteOutlined onClick={() => removeFromWishlist(movie.Title)} />
+                        ,
+                        <HeartTwoTone onClick={() => toggleLike(movie.Title)} twoToneColor="#eb2f96" />
+                    ] :
+                    [
+                        <DeleteOutlined onClick={() => removeFromWishlist(movie.Title)} />
+                        ,
+                        <HeartTwoTone onClick={() => toggleLike(movie.Title)} />
+                    ]
+            }
+        ><div>
+                <Meta
+                    title={movie.Title}
+                />
+            </div>
+        </Card>
+    }
+
+    else {
+        card = <Card
             style={{ width: '100%', maxWidth: 300, margin: '10px auto' }}
             cover={
-                movie.Poster !== "N/A" &&
+                (movie.Poster !== "N/A") &&
                 <img
                     alt="movie"
                     src={movie.Poster}
                 />
             }
-            actions={
-                removeFromWishlist ?
-                    movie.like ?
-                        [
-                            <DeleteOutlined onClick={() => removeFromWishlist(movie.Title)} />
-                            ,
-                            <HeartTwoTone onClick={() => toggleLike(movie.Title)} twoToneColor="#eb2f96" />
-                        ] :
-                        [
-                            <DeleteOutlined onClick={() => removeFromWishlist(movie.Title)} />
-                            ,
-                            <HeartTwoTone onClick={() => toggleLike(movie.Title)} />
-                        ]
-
-                    : [
-                        <Button key="addWishlist" onClick={() => addToWishlist(movie)} >Add to wishlist</Button>,
-                    ]
-            }
+            actions={[
+                <Button key="addWishlist" onClick={() => addToWishlist(movie)} >Add to wishlist</Button>,
+            ]}
         ><div>
                 <Meta
                     title={movie.Title}
@@ -43,6 +54,9 @@ function MovieCard({ movie, addToWishlist, removeFromWishlist, toggleLike }) {
                 Country - {movie.Country}<br />
             </div>
         </Card>
+    }
+    return (
+        <>{card}</>
     );
 }
 export default MovieCard;

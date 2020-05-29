@@ -87,7 +87,13 @@ function Movies() {
                 <meta name="description" content="Movies" />
             </Helmet>
             <Button onClick={() => setModalShow(true)}><HeartOutlined />Wishlist</Button>
-            <Wishlist modalShow={modalShow} setModalShow={setModalShow} wishlist={wishlist} removeFromWishlist={removeFromWishlist} toggleLike={toggleLike} />
+            <Wishlist
+                modalShow={modalShow}
+                setModalShow={setModalShow}
+                wishlist={wishlist}
+                setWishlist={setWishlist}
+                removeFromWishlist={removeFromWishlist}
+                toggleLike={toggleLike} />
             <Divider>Search a movie by name</Divider>
             <Input type="search" placeholder="search by movie title" onChange={onSearchChange} />
             <Divider />
