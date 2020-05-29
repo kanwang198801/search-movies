@@ -2,9 +2,9 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
 import { Card, Button } from 'antd';
-
+import { LikeOutlined, DeleteOutlined, HeartTwoTone } from '@ant-design/icons';
 const { Meta } = Card;
-function MovieCard({ movie, addToWishlist, removeFromWishlist }) {
+function MovieCard({ movie, addToWishlist, removeFromWishlist, toggleLike }) {
     return (
         <Card
             style={{ width: '100%', maxWidth: 300, margin: '10px auto' }}
@@ -17,9 +17,19 @@ function MovieCard({ movie, addToWishlist, removeFromWishlist }) {
             }
             actions={
                 removeFromWishlist ?
-                    [
-                        <Button key="removeFromWishlist" onClick={() => removeFromWishlist(movie.Title)} >Remove</Button>,
-                    ] : [
+                    movie.like ?
+                        [
+                            <DeleteOutlined onClick={() => removeFromWishlist(movie.Title)} />
+                            ,
+                            <HeartTwoTone onClick={() => toggleLike(movie.Title)} twoToneColor="#eb2f96" />
+                        ] :
+                        [
+                            <DeleteOutlined onClick={() => removeFromWishlist(movie.Title)} />
+                            ,
+                            <HeartTwoTone onClick={() => toggleLike(movie.Title)} />
+                        ]
+
+                    : [
                         <Button key="addWishlist" onClick={() => addToWishlist(movie)} >Add to wishlist</Button>,
                     ]
             }
@@ -44,8 +54,10 @@ MovieCard.propTypes = {
         Year: PropTypes.string.isRequired,
         Rated: PropTypes.string.isRequired,
         Country: PropTypes.string.isRequired,
-        Poster: PropTypes.string,
+        Poster: PropTypes.string.isRequired,
+        like: PropTypes.bool.isRequired,
     }).isRequired,
     addToWishlist: PropTypes.func,
     removeFromWishlist: PropTypes.func,
+    toggleLike: PropTypes.func,
 };

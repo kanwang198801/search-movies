@@ -32,6 +32,7 @@ function Movies() {
                         Rated: response.Rated,
                         Country: response.Country,
                         Poster: response.Poster,
+                        like: false,
                     }
                     setMovie(movie);
                 }
@@ -68,6 +69,17 @@ function Movies() {
         message.success(`${movie.Title} is removed from wishlist`);
     }
 
+    const toggleLike = (title) => {
+        const newWishlist = wishlist.map(movie => {
+            if (movie.Title === title) {
+                movie.like = !movie.like;
+            }
+            return movie;
+        }
+        );
+        setWishlist(newWishlist);
+    }
+    console.info(wishlist);
     return (
         <Theme>
             <Helmet>
@@ -75,7 +87,7 @@ function Movies() {
                 <meta name="description" content="Movies" />
             </Helmet>
             <Button onClick={() => setModalShow(true)}><HeartOutlined />Wishlist</Button>
-            <Wishlist modalShow={modalShow} setModalShow={setModalShow} wishlist={wishlist} removeFromWishlist={removeFromWishlist} />
+            <Wishlist modalShow={modalShow} setModalShow={setModalShow} wishlist={wishlist} removeFromWishlist={removeFromWishlist} toggleLike={toggleLike} />
             <Divider>Search a movie by name</Divider>
             <Input type="search" placeholder="search by movie title" onChange={onSearchChange} />
             <Divider />
