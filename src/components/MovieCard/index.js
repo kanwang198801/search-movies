@@ -12,17 +12,11 @@ function MovieCard({ movie, addToWishlist, removeFromWishlist, toggleLike }) {
         card = <Card
             style={{ width: '100%', margin: '10px auto' }}
             actions={
-                movie.like ?
-                    [
-                        <EyeInvisibleOutlined onClick={() => removeFromWishlist(movie.Title)} />
-                        ,
-                        <HeartTwoTone onClick={() => toggleLike(movie.Title)} twoToneColor="#eb2f96" />
-                    ] :
-                    [
-                        <EyeInvisibleOutlined onClick={() => removeFromWishlist(movie.Title)} />
-                        ,
-                        <HeartTwoTone onClick={() => toggleLike(movie.Title)} />
-                    ]
+                [
+                    <EyeInvisibleOutlined onClick={() => removeFromWishlist(movie.Title)} />
+                    ,
+                    <HeartTwoTone onClick={() => toggleLike(movie.Title)} twoToneColor={movie.like && "#eb2f96"} />
+                ]
             }
         ><div>
                 <Meta
