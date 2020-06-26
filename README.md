@@ -1,5 +1,12 @@
-Install:
-### `yarn`
+### Install
 
-Start:
-### `yarn start`
+yarn
+
+### Start app
+
+yarn start
+
+### Reference
+
+This app gets data from http://www.omdbapi.com
+
